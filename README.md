@@ -14,7 +14,7 @@ le plugin parle directement à l'API YouTube avec ton propre compte Google.
   - **Export DAW** : arme BeatDrop, lance l'export audio de ton DAW. BeatDrop capte le rendu offline.
   - Le silence au début est supprimé, la fin est coupée 1 s après le dernier son.
   - Ou bien **importe un WAV/AIFF/MP3** existant.
-- **Image de la vidéo** par glisser-déposer (PNG/JPG). Les images non 16:9 sont centrées sur un fond flouté.
+- **Image de la vidéo** par glisser-déposer (PNG/JPG). Les images non 16:9 sont centrées sur un fond noir.
 - **Vidéo MP4** 1080p H.264 + AAC 256 kb/s générée en local (AVFoundation, aucune dépendance).
 - **Titre / description / tags** générés depuis des modèles :
   `[FREE] {artist} Type Beat - "{name}"` → `[FREE] Drake Type Beat - "Midnight"`.

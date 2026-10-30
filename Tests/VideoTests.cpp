@@ -51,8 +51,8 @@ public:
             const auto centre = frame.getPixelAt (960, 540);
             expect (centre.getRed() > 200 && centre.getGreen() < 50);
 
-            const auto edge = frame.getPixelAt (5, 540); // blurred, darkened backdrop
-            expect (edge.getRed() < centre.getRed());
+            const auto edge = frame.getPixelAt (5, 540); // black bars
+            expect (edge == juce::Colours::black);
         }
 
         beginTest ("thumbnail is a JPEG under 2 MB");

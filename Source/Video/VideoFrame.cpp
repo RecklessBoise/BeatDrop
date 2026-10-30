@@ -19,17 +19,6 @@ juce::Image renderFrame (const juce::Image& cover, int width, int height)
 
     g.setImageResamplingQuality (juce::Graphics::highResamplingQuality);
 
-    // Cheap blur: squash the cover into a tiny image, then stretch it back up.
-    juce::Image tiny (juce::Image::ARGB, 48, 27, true);
-    {
-        juce::Graphics tg (tiny);
-        tg.setImageResamplingQuality (juce::Graphics::highResamplingQuality);
-        tg.drawImage (cover, tiny.getBounds().toFloat(), juce::RectanglePlacement::fillDestination);
-    }
-
-    g.drawImage (tiny, frame.getBounds().toFloat(), juce::RectanglePlacement::stretchToFit);
-    g.fillAll (juce::Colours::black.withAlpha (0.55f));
-
     g.drawImage (cover, frame.getBounds().toFloat(), juce::RectanglePlacement::centred);
     return frame;
 }

@@ -12,7 +12,7 @@ namespace beatdrop::VideoFrame
 
     juce::Image loadImage (const juce::File& file);
 
-    /** The cover fitted inside a 16:9 frame over a blurred, darkened copy of itself. */
+    /** The cover fitted inside a 16:9 frame on a black background. */
     juce::Image renderFrame (const juce::Image& cover, int width, int height);
 
     /** 1280x720 JPEG under YouTube's 2 MB thumbnail limit. */
