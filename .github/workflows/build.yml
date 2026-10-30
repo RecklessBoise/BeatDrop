@@ -1,0 +1,56 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  macos:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install Ninja
+        run: brew install ninja
+
+      - name: Configure (universal binary)
+        run: >
+          cmake -B build -G Ninja
+          -DCMAKE_BUILD_TYPE=Release
+          -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"
+
+      - name: Build
+        run: cmake --build build
+
+      - name: Unit tests
+        run: ./build/BeatDropTests_artefacts/Release/BeatDropTests
+
+      - name: pluginval (VST3)
+        run: |
+          curl -sSL -o pluginval.zip https://github.com/Tracktion/pluginval/releases/latest/download/pluginval_macOS.zip
+          unzip -q pluginval.zip
+          ./pluginval.app/Contents/MacOS/pluginval --strictness-level 5 --skip-gui-tests \
+            --validate "build/BeatDrop_artefacts/Release/VST3/BeatDrop.vst3"
+
+      - name: auval (AU)
+        run: |
+          mkdir -p ~/Library/Audio/Plug-Ins/Components
+          cp -R build/BeatDrop_artefacts/Release/AU/BeatDrop.component ~/Library/Audio/Plug-Ins/Components/
+          killall -9 AudioComponentRegistrar || true
+          auval -v aufx Bdrp Rckl
+
+      - name: Package
+        run: |
+          mkdir -p dist
+          cp -R build/BeatDrop_artefacts/Release/VST3/BeatDrop.vst3 dist/
+          cp -R build/BeatDrop_artefacts/Release/AU/BeatDrop.component dist/
+          cp README.md LICENSE dist/
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: BeatDrop-macOS
+          path: dist
